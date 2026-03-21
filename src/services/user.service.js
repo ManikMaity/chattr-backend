@@ -50,28 +50,30 @@ export const signupService = async (username, email, password) => {
 }
 
 export const signinService = async (email, password) => {
-    let user = await userRepo.getUserByEmail(email)
-    if (!user) {
-      throw new clientError({
-        message: 'No registered user found with this email',
-        explanation: 'User not found',
-        statusCode: 404
-      })
-    }
-    if (!bcrypt.compareSync(password, user.password)) {
-      throw new clientError({
-        message: 'Invailid password given',
-        explanation: "Password does'nt match with the user password"
-      })
-    }
-    const payment = await paymentRepo.findPaymentByUserId(user._id);
-    if (!payment || isExpired(payment?.updatedAt, 365)) {
-      user = await userRepo.update(user._id, { isSubscribed: false });
-    }
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
-    // eslint-disable-next-line no-unused-vars
-    const { password: pass, ...userData } = user._doc
-    return { user: userData, token }
+  let user = await userRepo.getUserByEmail(email)
+  if (!user) {
+    throw new clientError({
+      message: 'No registered user found with this email',
+      explanation: 'User not found',
+      statusCode: 404
+    })
+  }
+  if (!bcrypt.compareSync(password, user.password)) {
+    throw new clientError({
+      message: 'Invailid password given',
+      explanation: "Password does'nt match with the user password"
+    })
+  }
+  const payment = await paymentRepo.findPaymentByUserId(user._id)
+  if (!payment || isExpired(payment?.updatedAt, 365)) {
+    user = await userRepo.update(user._id, { isSubscribed: false })
+  }
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRY
+  })
+  // eslint-disable-next-line no-unused-vars
+  const { password: pass, ...userData } = user._doc
+  return { user: userData, token }
 }
 
 export async function forgetPasswordService(email) {
@@ -150,8 +152,8 @@ export async function verifyEmailService(hash) {
   const user = await userRepo.update(verificationDoc.user, { isVerified: true })
   await emailVerificationRepo.delete(verificationDoc._id)
   // eslint-disable-next-line no-unused-vars
-  const {password, ...userData} = user._doc;
-  return userData;
+  const { password, ...userData } = user._doc
+  return userData
 }
 
 export async function resendVerifyEmailService(email) {
@@ -185,22 +187,20 @@ export async function resendVerifyEmailService(email) {
 
   if (verifyEmailDoc) {
     await emailVerificationRepo.update(verifyEmailDoc._id, {
-      hash, 
+      hash,
       verificationExpiry: Date.now() + 24 * 60 * 60 * 1000
     })
-
   } else {
     await emailVerificationRepo.create({ email, hash, user: user._id })
   }
 
   mailQueue.add(createUserVerificationMail(email, hash))
-  return user;
+  return user
 }
 
 export async function updateUserProfileService(user, data) {
-  
   if (data?.username !== user.username) {
-    const userNameExit = await userRepo.getUserByUsername(data.username);
+    const userNameExit = await userRepo.getUserByUsername(data.username)
     if (userNameExit) {
       throw {
         statusCode: StatusCodes.BAD_REQUEST,
@@ -211,13 +211,13 @@ export async function updateUserProfileService(user, data) {
   }
   const updatedUser = await userRepo.update(user._id, data)
   // eslint-disable-next-line no-unused-vars
-  const {password, ...userData} = updatedUser._doc;
-  return userData;
+  const { password, ...userData } = updatedUser._doc
+  return userData
 }
 
 export async function getUserService(id) {
-  const user = await userRepo.getById(id);
+  const user = await userRepo.getById(id)
   // eslint-disable-next-line no-unused-vars
-  const {password, ...userData} = user._doc;
-  return userData;
+  const { password, ...userData } = user._doc
+  return userData
 }

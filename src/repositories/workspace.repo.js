@@ -62,15 +62,20 @@ const workspaceRepo = {
     await workspace.save()
     return workspace
   },
-  makeWorkspaceMemberAdmin : async (workspaceId, userId) => {
-    const workspace = await WorkspaceModel.findById(workspaceId).populate("members.member", "username avatar email");
+  makeWorkspaceMemberAdmin: async (workspaceId, userId) => {
+    const workspace = await WorkspaceModel.findById(workspaceId).populate(
+      'members.member',
+      'username avatar email'
+    )
 
-    const isAlreadyAdmin = workspace.members.find(member => {
-      if (member?.member?.id.toString() == userId.toString() &&  member?.role == "admin"){
-        return true;
-      }
-      else {
-        return false;
+    const isAlreadyAdmin = workspace.members.find((member) => {
+      if (
+        member?.member?.id.toString() == userId.toString() &&
+        member?.role == 'admin'
+      ) {
+        return true
+      } else {
+        return false
       }
     })
 
@@ -81,18 +86,17 @@ const workspaceRepo = {
         statusCode: StatusCodes.UNAUTHORIZED
       }
     }
-    
-    workspace?.members?.forEach(member => {
-      if (member?.member?._id.toString() == userId.toString()){
-        member.role = "admin";
+
+    workspace?.members?.forEach((member) => {
+      if (member?.member?._id.toString() == userId.toString()) {
+        member.role = 'admin'
       }
-      return member;
+      return member
     })
 
-    await workspace.save();
+    await workspace.save()
 
-    return workspace;
-    
+    return workspace
   },
   removeMemberFromWorkspace: async (workspaceId, userId) => {
     const workspace = await WorkspaceModel.findById(workspaceId)
@@ -145,7 +149,7 @@ const workspaceRepo = {
     return workspace
   },
   removeChannelFromWorkspace: async (workspaceId, channelId) => {
-    const workspace = await WorkspaceModel.findById(workspaceId);
+    const workspace = await WorkspaceModel.findById(workspaceId)
 
     if (!workspace) {
       throw new clientError({
@@ -155,18 +159,22 @@ const workspaceRepo = {
       })
     }
 
-    const channelExits = workspace?.channels.find(channel => channel.toString() === channelId.toString());
+    const channelExits = workspace?.channels.find(
+      (channel) => channel.toString() === channelId.toString()
+    )
 
-    if (!channelExits){
-        throw clientError({
-          message: 'Channel is not a part of this workspace',
-          explanation: [ 'Channel is not a part of this workspace'],
-          statusCode: StatusCodes.NOT_FOUND
-        })
+    if (!channelExits) {
+      throw clientError({
+        message: 'Channel is not a part of this workspace',
+        explanation: ['Channel is not a part of this workspace'],
+        statusCode: StatusCodes.NOT_FOUND
+      })
     }
 
-    workspace.channels = workspace.channels.filter(channel => channel.toString() !== channelId.toString());
-    await workspace.save();
+    workspace.channels = workspace.channels.filter(
+      (channel) => channel.toString() !== channelId.toString()
+    )
+    await workspace.save()
     return workspace
   },
   fetchAllWorkspacesByMemberId: async (memberId) => {
@@ -176,10 +184,9 @@ const workspaceRepo = {
     return workspaces
   },
   getWorkspaceDetailsById: async (workspaceId) => {
-    const workspace = await WorkspaceModel.findById(workspaceId).populate('channels').populate(
-      'members.member',
-      'username email avatar'
-    )
+    const workspace = await WorkspaceModel.findById(workspaceId)
+      .populate('channels')
+      .populate('members.member', 'username email avatar')
     if (!workspace) {
       throw new clientError({
         message: 'Workspace not found',
@@ -192,7 +199,7 @@ const workspaceRepo = {
   getWorkspaceFromChannelId: async (channelId) => {
     const workspace = await WorkspaceModel.findOne({
       channels: new mongoose.Types.ObjectId(channelId)
-    });
+    })
     if (!workspace) {
       throw new clientError({
         message: 'Workspace not found',
@@ -202,14 +209,13 @@ const workspaceRepo = {
     }
     return workspace
   },
-  changeWorkspaceJoinCode : async (workspaceId, joinCode) => {
-    const workspace = await WorkspaceModel.findById(workspaceId).populate('channels').populate(
-      'members.member',
-      'username email avatar'
-    )
-    workspace.joinCode = joinCode;
-    await workspace.save();
-    return workspace;
+  changeWorkspaceJoinCode: async (workspaceId, joinCode) => {
+    const workspace = await WorkspaceModel.findById(workspaceId)
+      .populate('channels')
+      .populate('members.member', 'username email avatar')
+    workspace.joinCode = joinCode
+    await workspace.save()
+    return workspace
   }
 }
 

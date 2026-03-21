@@ -19,7 +19,6 @@ import {
 } from '../utils/common/socketEventConstant.js'
 
 export function messageHandler(io, socket) {
-
   socket.on(EDIT_MESSAGE_EVENT, async function editMessageHandler(data, cb) {
     const { channelId } = data
     try {
@@ -67,7 +66,7 @@ export function messageHandler(io, socket) {
   })
 
   socket.on(NEW_DM_MESSAGE, async function createMessageHandler(data, cb) {
-    const {roomId } = data
+    const { roomId } = data
     const messageResponse = await createMessageService(data)
     io.to(roomId).emit(NEW_MESSAGE_RECEIVED, messageResponse)
     if (cb) {
@@ -123,8 +122,9 @@ export function messageHandler(io, socket) {
   })
 
   socket.on(NEW_DM_MESSAGE_LIKE, async function likeMessageHandler(data, cb) {
-    console.log(data);
-    const { workspaceId, channelId, likeContent, messageId, token, roomId } = data
+    console.log(data)
+    const { workspaceId, channelId, likeContent, messageId, token, roomId } =
+      data
     try {
       const { id } = jwt.verify(token, JWT_SECRET)
       const updatedMessage = await createLikeService(

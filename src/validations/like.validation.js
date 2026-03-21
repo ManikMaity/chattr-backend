@@ -13,4 +13,4 @@ export const createLikeSchama = z.object({
     required_error: 'likeContent is required',
     invalid_type_error: 'likeContent must be a string'
   })
-});
+})

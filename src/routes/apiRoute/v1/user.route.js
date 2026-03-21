@@ -1,5 +1,4 @@
 import express from 'express'
-import { StatusCodes } from 'http-status-codes'
 
 import {
   forgetPasswordController,
@@ -20,14 +19,26 @@ import { userProfileUpdateSchema } from '../../../validations/userProfileUpdate.
 import validate from '../../../validations/validator.js'
 const userRouter = express.Router()
 
-userRouter.get("/", verifyToken, getUserController);
+userRouter.get('/', verifyToken, getUserController)
 userRouter.post('/signup', validate(signupSchema), signupController)
 userRouter.post('/signin', validate(signinSchema), signinController)
-userRouter.post('/forget-password', validate(forgetPassSchema), forgetPasswordController);
-userRouter.post("/reset-password", validate(resetPasswordShema), resetPasswordController);
-userRouter.get("/verifyEmail/:token", verifyEmailController);
-userRouter.post("/resend-verifyEmail", resendVerifyEmailController);
-userRouter.put("/update-profile", validate(userProfileUpdateSchema), verifyToken, updateUserProfileController);
-
+userRouter.post(
+  '/forget-password',
+  validate(forgetPassSchema),
+  forgetPasswordController
+)
+userRouter.post(
+  '/reset-password',
+  validate(resetPasswordShema),
+  resetPasswordController
+)
+userRouter.get('/verifyEmail/:token', verifyEmailController)
+userRouter.post('/resend-verifyEmail', resendVerifyEmailController)
+userRouter.put(
+  '/update-profile',
+  validate(userProfileUpdateSchema),
+  verifyToken,
+  updateUserProfileController
+)
 
 export default userRouter

@@ -30,8 +30,10 @@ export function isAdminOfWorkspace(workspace, userId) {
 }
 
 export function moreThanOneAdmin(workspace) {
-  const adminCount = workspace.members?.filter(member => member?.role == 'admin').length;
-  return adminCount > 1;
+  const adminCount = workspace.members?.filter(
+    (member) => member?.role == 'admin'
+  ).length
+  return adminCount > 1
 }
 
 function isChannelAlreadyExits(workspace, channelName) {
@@ -232,8 +234,12 @@ export async function addMemberToWorkspaceService(
   return respose
 }
 
-export async function makeWorkspaceMemberAdminService(workspaceId, memberId, userId) {
-  const workspace = await workspaceRepo.getById(workspaceId);
+export async function makeWorkspaceMemberAdminService(
+  workspaceId,
+  memberId,
+  userId
+) {
+  const workspace = await workspaceRepo.getById(workspaceId)
   if (!workspace) {
     throw {
       statusCode: StatusCodes.NOT_FOUND,
@@ -242,7 +248,7 @@ export async function makeWorkspaceMemberAdminService(workspaceId, memberId, use
     }
   }
 
-  const isAdmin = isAdminOfWorkspace(workspace, userId);
+  const isAdmin = isAdminOfWorkspace(workspace, userId)
   if (!isAdmin) {
     throw {
       statusCode: StatusCodes.UNAUTHORIZED,
@@ -251,7 +257,7 @@ export async function makeWorkspaceMemberAdminService(workspaceId, memberId, use
     }
   }
 
-  const isMember = isMemberOfWorkspace(workspace, memberId);
+  const isMember = isMemberOfWorkspace(workspace, memberId)
   if (!isMember) {
     throw {
       statusCode: StatusCodes.NOT_FOUND,
@@ -259,8 +265,11 @@ export async function makeWorkspaceMemberAdminService(workspaceId, memberId, use
       explanation: ['Member not found in this workspace']
     }
   }
-  const response = await workspaceRepo.makeWorkspaceMemberAdmin(workspaceId, memberId);
-  return response;
+  const response = await workspaceRepo.makeWorkspaceMemberAdmin(
+    workspaceId,
+    memberId
+  )
+  return response
 }
 
 export async function removeMemberFromWorkspaceService(
@@ -274,7 +283,9 @@ export async function removeMemberFromWorkspaceService(
     throw {
       statusCode: StatusCodes.BAD_REQUEST,
       message: 'You cannot remove yourself from the workspace',
-      explanation: ['You cannot remove yourself from the workspace instead use leave']
+      explanation: [
+        'You cannot remove yourself from the workspace instead use leave'
+      ]
     }
   }
 
@@ -311,7 +322,7 @@ export async function removeMemberFromWorkspaceService(
 }
 
 export async function leaveWorkspaceService(workspaceId, userId) {
-  const workspace = await workspaceRepo.getById(workspaceId);
+  const workspace = await workspaceRepo.getById(workspaceId)
   if (!workspace) {
     throw {
       statusCode: StatusCodes.NOT_FOUND,
@@ -320,9 +331,9 @@ export async function leaveWorkspaceService(workspaceId, userId) {
     }
   }
 
-  const isAdmin = isAdminOfWorkspace(workspace, userId);
-  const admins = moreThanOneAdmin(workspace);
-  
+  const isAdmin = isAdminOfWorkspace(workspace, userId)
+  const admins = moreThanOneAdmin(workspace)
+
   if (isAdmin && !admins) {
     throw {
       statusCode: StatusCodes.UNAUTHORIZED,
@@ -331,7 +342,10 @@ export async function leaveWorkspaceService(workspaceId, userId) {
     }
   }
 
-  const response = await workspaceRepo.removeMemberFromWorkspace(workspaceId, userId);
+  const response = await workspaceRepo.removeMemberFromWorkspace(
+    workspaceId,
+    userId
+  )
   return response
 }
 

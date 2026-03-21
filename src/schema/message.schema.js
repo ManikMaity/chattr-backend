@@ -6,16 +6,16 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Message text is required']
     },
-    simpleText : {
-      type : String,
-      default : null
+    simpleText: {
+      type: String,
+      default: null
     },
     image: {
       type: String
     },
-    roomId : {
-      type : String,
-      default : null
+    roomId: {
+      type: String,
+      default: null
     },
     channelId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,10 +32,10 @@ const messageSchema = new mongoose.Schema(
       ref: 'Workspace',
       required: [true, 'Workspace id is required']
     },
-    likes : [
+    likes: [
       {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Like"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Like'
       }
     ]
   },

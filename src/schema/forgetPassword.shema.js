@@ -1,22 +1,25 @@
-import {model,Schema} from "mongoose";
+import { model, Schema } from 'mongoose'
 
-const forgetPassowrdShema = new Schema ({
-    email : {
-        type : String,
-        required : [true, "Email is required"],
+const forgetPassowrdShema = new Schema(
+  {
+    email: {
+      type: String,
+      required: [true, 'Email is required']
     },
-    
-    hash : {
-        type : String,
-        required : [true, "Hash is required"],
+
+    hash: {
+      type: String,
+      required: [true, 'Hash is required']
     },
-    user : {
-        type : Schema.Types.ObjectId,
-        ref : "User",
-        required : [true, "User is required"]
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'User is required']
     }
-}, {timestamps : true});
+  },
+  { timestamps: true }
+)
 
-const ForgetPasswordModel = model("ForgetPassword", forgetPassowrdShema);
+const ForgetPasswordModel = model('ForgetPassword', forgetPassowrdShema)
 
-export default ForgetPasswordModel;
+export default ForgetPasswordModel

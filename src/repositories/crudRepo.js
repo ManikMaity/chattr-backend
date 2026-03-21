@@ -31,13 +31,13 @@ export default function crudRepo(model) {
         .limit(limit)
       return docs
     },
-    deleteManyByIds : async function (idsArray = []) {
+    deleteManyByIds: async function (idsArray = []) {
       const response = this.model.deleteMany({
-        _id : {
-          "$in" : idsArray
+        _id: {
+          $in: idsArray
         }
-      });
-      return response;
+      })
+      return response
     }
   }
 }

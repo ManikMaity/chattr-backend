@@ -25,6 +25,14 @@ const userSchema = new Schema(
         'Please fill a valid email address'
       ]
     },
+    aiResponseCount: {
+      type: Number,
+      default: 0
+    },
+    aiResponseResetTime: {
+      type: Date,
+      default: null
+    },
     password: {
       type: String,
       required: [true, 'password is required']
@@ -32,13 +40,13 @@ const userSchema = new Schema(
     avatar: {
       type: String
     },
-    isVerified : {
-      type : Boolean,
-      default : false
+    isVerified: {
+      type: Boolean,
+      default: false
     },
-    isSubscribed : {
-      type : Boolean,
-      default : false
+    isSubscribed: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

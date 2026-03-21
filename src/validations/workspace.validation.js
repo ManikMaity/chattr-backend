@@ -70,7 +70,7 @@ export const makeAdminSchema = z.object({
     required_error: 'Workspace id is requirerd',
     invalid_type_error: 'Workspace id must be a string'
   }),
-  memberId :  z.string({
+  memberId: z.string({
     required_error: 'Member id is requirerd',
     invalid_type_error: 'Member id must be a string'
   })

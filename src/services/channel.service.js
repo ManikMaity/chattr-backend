@@ -51,7 +51,6 @@ export async function deleteChannelService(channelId, userId) {
     }
   }
 
-
   const isAdmin = isAdminOfWorkspace(channel?.workspaceId, userId)
 
   if (!isAdmin) {
@@ -62,7 +61,7 @@ export async function deleteChannelService(channelId, userId) {
     }
   }
 
-   await workspaceRepo.removeChannelFromWorkspace(
+  await workspaceRepo.removeChannelFromWorkspace(
     channel?.workspaceId,
     channelId
   )
@@ -73,16 +72,16 @@ export async function deleteChannelService(channelId, userId) {
 }
 
 export async function updateChannelService(channelId, userId, data) {
-    const channel = await channelRepo.getChannelByIdWithWorkspace(channelId)
+  const channel = await channelRepo.getChannelByIdWithWorkspace(channelId)
 
-    if (!channel) {
-      throw {
-        statusCode: StatusCodes.NOT_FOUND,
-        message: 'Channel not found',
-        explanation: ['Channel not found']
-      }
+  if (!channel) {
+    throw {
+      statusCode: StatusCodes.NOT_FOUND,
+      message: 'Channel not found',
+      explanation: ['Channel not found']
     }
-     const isAdmin = isAdminOfWorkspace(channel?.workspaceId, userId)
+  }
+  const isAdmin = isAdminOfWorkspace(channel?.workspaceId, userId)
 
   if (!isAdmin) {
     throw {
@@ -92,7 +91,7 @@ export async function updateChannelService(channelId, userId, data) {
     }
   }
 
-  const updatedChannel = await channelRepo.update(channelId, data);
+  const updatedChannel = await channelRepo.update(channelId, data)
 
-  return updatedChannel;
+  return updatedChannel
 }

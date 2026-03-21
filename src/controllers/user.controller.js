@@ -20,9 +20,10 @@ export const getUserController = async (req, res) => {
   try {
     const userId = req.user._id
     const user = await getUserService(userId)
-    res.status(StatusCodes.OK).json(customSuccessResponse("User fetched successfully", user));
-  }
-  catch (err) {
+    res
+      .status(StatusCodes.OK)
+      .json(customSuccessResponse('User fetched successfully', user))
+  } catch (err) {
     console.log(err)
     if (err.statusCode) {
       res.status(err.statusCode).json(customErrorResponse(err))
@@ -109,12 +110,13 @@ export const resetPasswordController = async (req, res) => {
 }
 
 export const verifyEmailController = async (req, res) => {
-  try{
-    const token = req.params.token;
-    const response = await verifyEmailService(token);
-    res.status(StatusCodes.OK).json(customSuccessResponse("Email verified successfully", response));
-  }
-  catch(err){
+  try {
+    const token = req.params.token
+    const response = await verifyEmailService(token)
+    res
+      .status(StatusCodes.OK)
+      .json(customSuccessResponse('Email verified successfully', response))
+  } catch (err) {
     if (err.statusCode) {
       res.status(err.statusCode).json(customErrorResponse(err))
     } else {
@@ -127,11 +129,12 @@ export const verifyEmailController = async (req, res) => {
 
 export const resendVerifyEmailController = async (req, res) => {
   try {
-    const email = req.body.email;
-     await resendVerifyEmailService(email);
-    res.status(StatusCodes.OK).json(customSuccessResponse("verification link resend successfully", {}));
-  }
-  catch(err){
+    const email = req.body.email
+    await resendVerifyEmailService(email)
+    res
+      .status(StatusCodes.OK)
+      .json(customSuccessResponse('verification link resend successfully', {}))
+  } catch (err) {
     if (err.statusCode) {
       res.status(err.statusCode).json(customErrorResponse(err))
     } else {
@@ -144,19 +147,20 @@ export const resendVerifyEmailController = async (req, res) => {
 
 export const updateUserProfileController = async (req, res) => {
   try {
-    const user = req.user;
-    const {avatar, username} = req.body;
+    const user = req.user
+    const { avatar, username } = req.body
     if (!avatar && !username) {
       throw {
         statusCode: StatusCodes.BAD_REQUEST,
-        message: "Please provide avatar or username to update profile",
-        explanation : ["Please provide avatar or username to update profile"]
+        message: 'Please provide avatar or username to update profile',
+        explanation: ['Please provide avatar or username to update profile']
       }
     }
-    const updatedUser = await updateUserProfileService(user, req.body);
-    res.status(StatusCodes.OK).json(customSuccessResponse("Profile updated successfully", updatedUser));
-  }
-  catch (err) {
+    const updatedUser = await updateUserProfileService(user, req.body)
+    res
+      .status(StatusCodes.OK)
+      .json(customSuccessResponse('Profile updated successfully', updatedUser))
+  } catch (err) {
     if (err.statusCode) {
       res.status(err.statusCode).json(customErrorResponse(err))
     } else {

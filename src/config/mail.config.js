@@ -18,8 +18,8 @@ export function createMailerOption(receiverEmail, subject, bodyText) {
     from: MAIL_ID,
     to: receiverEmail,
     subject: subject,
-    text: bodyText,
-}
+    text: bodyText
+  }
 }
 
-export default transporter;
+export default transporter

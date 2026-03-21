@@ -1,8 +1,9 @@
-import {z} from "zod";
+import { z } from 'zod'
 
 export const userProfileUpdateSchema = z.object({
-    username : z.string({
-        invalid_type_error : 'username must be a string'
+  username: z
+    .string({
+      invalid_type_error: 'username must be a string'
     })
     .min(3, 'username must be at least 3 characters')
     .max(20, 'username must be at most 20 characters')
@@ -12,8 +13,9 @@ export const userProfileUpdateSchema = z.object({
     )
     .optional(),
 
-    avater : z.string({
-        invalid_type_error : "avater image must be a string"
+  avater: z
+    .string({
+      invalid_type_error: 'avater image must be a string'
     })
     .url('invalid url format')
     .optional()

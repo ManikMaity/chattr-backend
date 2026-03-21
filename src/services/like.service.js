@@ -12,7 +12,6 @@ export async function createLikeService(
   workspaceId,
   userId
 ) {
-    
   const message = await messageRepo.getMessageWithLikesDetail(messageId)
 
   if (!message) {
@@ -22,7 +21,9 @@ export async function createLikeService(
       explanation: ['Message not found']
     }
   }
-  const alreadyLiked = message.likes.find(like => like.userId.toString() === userId.toString())
+  const alreadyLiked = message.likes.find(
+    (like) => like.userId.toString() === userId.toString()
+  )
   if (alreadyLiked) {
     throw {
       statusCode: StatusCodes.BAD_REQUEST,
@@ -58,12 +59,12 @@ export async function createLikeService(
   }
   message.likes.push(like._id)
   await message.save()
-  const updatedMessage = await messageRepo.getMessageWithLikesDetail(messageId);
-  return updatedMessage;
+  const updatedMessage = await messageRepo.getMessageWithLikesDetail(messageId)
+  return updatedMessage
 }
 
 export async function getMessageLikesService(messageId) {
-  const message = await messageRepo.getById(messageId);
+  const message = await messageRepo.getById(messageId)
   if (!message) {
     throw {
       statusCode: StatusCodes.NOT_FOUND,
@@ -79,7 +80,7 @@ export async function getMessageLikesService(messageId) {
       explanation: ['No Reactions found for this message']
     }
   }
-  
-  const likes = await likeRepo.getAllLikesByMessageId(messageId);
-  return likes;
+
+  const likes = await likeRepo.getAllLikesByMessageId(messageId)
+  return likes
 }
